@@ -1,3 +1,6 @@
+[![Python application test with Github](https://github.com/SimoneGiaco/NSGA2-NSGA3Comparison/actions/workflows/main.yml/badge.svg)](https://github.com/SimoneGiaco/NSGA2-NSGA3Comparison/actions/workflows/main.yml)
+
+
 # NSGA2-NSGA3Comparison
 Comparison of the algorithms NSGAII and NSGAIII on a set of problems from the DTLZ suite.
 
