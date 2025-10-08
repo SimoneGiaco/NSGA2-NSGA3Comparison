@@ -5,6 +5,7 @@ from pymoo.util.ref_dirs import get_reference_directions
 from src.opt import NSGA2_opt, NSGA3_opt, get_prob
 import numpy as np
 
+
 #Auxiliary function which specifies the problem ID of n_obj from a user input
 def set_problem()-> str:
     problem = input("Enter the problem you want to solve ('DTLZ2', 'DTLZ3', 'DTLZ6' or 'DTLZ7'): ").upper()
@@ -12,6 +13,7 @@ def set_problem()-> str:
         return problem
     print("Invalid problem. Please enter 'DTLZ2', 'DTLZ3', 'DTLZ6' or 'DTLZ7'.")  #Exception if the user input does not correspond to the ID of one of the problems.
     return set_problem()
+
 
 #Auxiliary function which sets the value of n_obj from a user input
 def set_objective(problem)-> int:
@@ -26,6 +28,7 @@ def set_objective(problem)-> int:
     except ValueError as e:
         print(e)
     return set_objective(problem)
+
 
 #Function providing the metrics and plots for the optimized solution
 def optimization_outcome(problem, n_obj, result):
