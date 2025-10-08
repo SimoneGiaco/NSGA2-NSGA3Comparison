@@ -59,6 +59,7 @@ def optimization_outcome(problem, n_obj, result):
         plot = Scatter()                                              #We add the plot for the non-dominated front (in red) VS points of the Pareto front (in black).
         plot.add(pff, plot_type='scatter', color="black", alpha=0.5)
         plot.add(result.F, facecolor="red", edgecolor="red")
+        plot.save(f"{problem}_{n_obj}_objectives.png")  #We save the plot as a .png file.
         plot.show()
 
 
