@@ -6,7 +6,7 @@ from src.opt import NSGA2_opt, NSGA3_opt, get_prob
 import numpy as np
 
 
-#Auxiliary function which specifies the problem ID of n_obj from a user input
+#Auxiliary function which specifies the problem ID from a user input
 def set_problem()-> str:
     problem = input("Enter the problem you want to solve ('DTLZ2', 'DTLZ3', 'DTLZ6' or 'DTLZ7'): ").upper()
     if problem in ['DTLZ2', 'DTLZ3', 'DTLZ6', 'DTLZ7']:
