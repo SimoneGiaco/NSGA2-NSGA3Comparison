@@ -1,0 +1,462 @@
+\documentclass[a4paper,11pt]{article}
+\pdfoutput=1
+
+\usepackage[a4paper,
+  left=2.5cm, right=2.5cm,
+  top= 3cm, bottom=4cm]{geometry}
+
+
+\usepackage{amsmath}
+\numberwithin{equation}{section}
+\usepackage{mathtools}
+\usepackage{oldgerm}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{framed}
+\usepackage{xcolor}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+
+\usepackage{epic}
+\usepackage{hyperref}
+\usepackage{bbold}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+
+\usepackage{array}
+\usepackage{makecell}
+
+
+
+\begin{document} 
+
+\section*{Comparison between NSGAII and NSGAIII on DTLZ problems}
+\vspace{0.5cm}
+We consider each problem with 2, 3 and 4 objectives when possible. We performed 10 runs with different initial populations for both algorithms, to test their consistency on multiple runs. We report median, max and min IGD values for the 10 runs in each case. For the run with minimal IGD value we also report the hypervolume and (for comparison) the hypervolume of the pareto front when known. For 2 and 3 objectives we plot the result compared to the Pareto front for the run with lowest IGD value.
+
+\section{DTLZ2 problem}
+
+\subsection{Two Objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 0.01817}\\
+\text{Max: 0.01973}\\
+\text{Min: 0.01543}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.01949}\\
+\text{Max: 0.01955}\\
+\text{Min: 0.01947}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 0.1994}\\
+\text{Pareto: 0.21026}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.19328}\\
+\text{Pareto: 0.21057}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+        \centering
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA2DTLZ22.png} 
+            \caption*{NSGAII}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA3DTLZ22.png} 
+            \caption*{NSGAIII} 
+        \end{minipage}
+        \caption{Non-dominated front for the two algorithms in red and Pareto front in black. } 
+    \end{figure}
+
+\noindent Both algorithms perform well on this simple problem. NSGAII has slightly lower IGD values but the variance of IGD values for NSGAIII is very low. 
+
+\newpage
+
+\subsection{Three Objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 0.06999}\\
+\text{Max: 0.07403}\\
+\text{Min: 0.06817}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.05157}\\
+\text{Max: 0.05223}\\
+\text{Min: 0.05101}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 0.38703}\\
+\text{Pareto: 0.43179}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.41499}\\
+\text{Pareto: 0.43016}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+        \centering
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA2DTLZ23.png} 
+            \caption*{NSGAII}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA3DTLZ23.png} 
+            \caption*{NSGAIII} 
+        \end{minipage}
+        \caption{Non-dominated front for the two algorithms in red and Pareto front in black. } 
+    \end{figure}
+
+\noindent Both algorithms perform well but NSGAIII has a better distribution, covering the entirety of the pareto front. This is also reflected in lower IGD values with less variance and hypervolume closer to that of the Pareto front. NSGAIII is therefore better in this case.  
+
+\subsection{Four Objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 0.1603}\\
+\text{Max: 0.17403}\\
+\text{Min: 0.15529}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.00047}\\
+\text{Max: 0.00068}\\
+\text{Min: 0.00038}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 0.47863}\\
+\text{Pareto: 0.55467}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.54843}\\
+\text{Pareto: 0.54858}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\noindent In this case we cannot plot the four-dimensional fronts and we have to rely on the metrics only. NSGAIII clearly outperformes NSGAII: The IGD values are orders of magnitude better and also the hypervolume is very close to the reference value.
+
+
+\section{DTLZ3 problem}
+
+\subsection{Two Objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 0.0228}\\
+\text{Max: 1.02515}\\
+\text{Min: 0.01655}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.02278}\\
+\text{Max: 1.00595}\\
+\text{Min: 0.01979}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 0.19894}\\
+\text{Pareto: 0.21214}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.19407}\\
+\text{Pareto: 0.21466}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+        \centering
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA2DTLZ32.png} 
+            \caption*{NSGAII}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA3DTLZ32.png} 
+            \caption*{NSGAIII} 
+        \end{minipage}
+        \caption{Non-dominated front for the two algorithms in red and Pareto front in black. } 
+    \end{figure}
+
+\noindent Both algorithms perform well on average but NSGAII has slightly lower IGD values. Notice that in this case the IGD values have high variance for both algorithms, indicating that there is a significant chance that a single run does not perform well. 
+
+\newpage
+
+\subsection{Three Objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 0.07844}\\
+\text{Max: 2.01509}\\
+\text{Min: 0.07161}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.05158}\\
+\text{Max: 2.01038}\\
+\text{Min: 0.0512}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 0.39356}\\
+\text{Pareto: 0.43604}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.41393}\\
+\text{Pareto: 0.42613}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+        \centering
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA2DTLZ33.png} 
+            \caption*{NSGAII}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA3DTLZ33.png} 
+            \caption*{NSGAIII} 
+        \end{minipage}
+        \caption{Non-dominated front for the two algorithms in red and Pareto front in black. } 
+    \end{figure}
+
+\noindent Again, as in the previous problem with 3 objectives, NSGAIII has a better distribution covering the entirety of the pareto front and it has better metrics  with respect to NSGAII. As in the case with 2 objectives, we have for both algorithms high variance for IGD values. 
+
+\subsection{Four objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 1.04668}\\
+\text{Max: 2.14757}\\
+\text{Min: 0.21317}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.05946}\\
+\text{Max: 2.00214}\\
+\text{Min: 0.00334}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 448683.96822}\\
+\text{Pareto: 448684.16435}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.55568}\\
+\text{Pareto: 0.56169}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\noindent In this case the NSGAII algorithm seems to fail to converge properly, in particular the extremely high hypervolume metric suggests the population is not concentrated in the proximity of the Pareto front. NSGAIII instead converges properly, with low IGD and hypervolume values. Again we can notice a significant variance in IGD values. 
+
+\section{DTLZ6 problem}
+
+This problem is not really defined in the case with 2 objectives, therefore we consider only the cases with 3 and 4 objectives.
+
+\subsection{Three Objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 0.10183}\\
+\text{Max: 0.1636}\\
+\text{Min: 0.06277}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.11539}\\
+\text{Max: 0.1535}\\
+\text{Min: 0.06725}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 0.1369}\\
+\text{Pareto: 0.19142}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.39826}\\
+\text{Pareto: 0.52387}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+        \centering
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA2DTLZ63.png} 
+            \caption*{NSGAII}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA3DTLZ63.png} 
+            \caption*{NSGAIII} 
+        \end{minipage}
+        \caption{Non-dominated front for the two algorithms in red and Pareto front in black. } 
+    \end{figure}
+
+\noindent The IGD values are similar for the two algorithms, but the hypervolume analysis favors NSGAII. Also from the plots we see that NSGAIII has only few non dominated points out of the 100 individuals of the population. in this case NSGAII seems to converge better.
+
+\newpage
+
+\subsection{Four objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+ & NSGAIII \\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Median: 9.08415}\\
+\text{Max: 34.64039}\\
+\text{Min: 0.64847}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+        \centering
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA2Plot.png} 
+            \caption*{NSGAII}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA3Plot.png} 
+            \caption*{NSGAIII} 
+        \end{minipage}
+        \caption{Hypervolume value as a function of the number of generations. } 
+    \end{figure}
+
+\noindent The Pareto front is not implemented yet for this problem in pymoo, so we cannot compute IGD and we have to rely on the hypervolume only. We see that for NSGAII the hypervolume does not decrease monotonically during the optimization, indicating that the algorithm is not converging properly. The situation is much better for NSGAIII and therefore we consider median, max and min hypervolume over 10 runs. NSGAIII seems to converge well, even though the hypervolume sequence has a high variance as we can see from the table.
+
+\newpage
+
+\section{DTLZ7 problem}
+
+Also in this case we can only consider the cases with 3 and 4 objectives.
+
+\subsection{Three objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+IGD Values &$\begin{array}{l}
+\text{Median: 0.071}\\
+\text{Max: 0.076}\\
+\text{Min: 0.06791}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.0969}\\
+\text{Max: 0.35901}\\
+\text{Min: 0.09425}\end{array}$\\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Min IGD: 0.8573}\\
+\text{Pareto: 0.98315}\end{array}$&
+$\begin{array}{l}
+\text{Min IGD: 0.93267}\\
+\text{Pareto: 1.07048}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+        \centering
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA2DTLZ73.png} 
+            \caption*{NSGAII}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.48\textwidth} 
+            \centering
+            \includegraphics[width=\linewidth]{NSGA3DTLZ73.png} 
+            \caption*{NSGAIII} 
+        \end{minipage}
+        \caption{Non-dominated front for the two algorithms in red and Pareto front in black. } 
+    \end{figure}
+
+\noindent In this case NSGAII seems to perform better: it has better metrics and more non dominated points close to the true Pareto front.
+
+\subsection{Four objectives}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & NSGAII & NSGAIII \\
+\hline
+HyperVolume &$\begin{array}{l}
+\text{Median: 1.26855}\\
+\text{Max: 1.47005}\\
+\text{Min: 1.12044}\end{array}$&
+$\begin{array}{l}
+\text{Median: 0.94228}\\
+\text{Max: 1.14404}\\
+\text{Min: 0.84756}\end{array}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\noindent Also in this case we cannot compute the IGD value and therefore we rely on the hypervolume only. Both algorithms converge but he metric is better for NSGAIII.
+
+
+
+
+
+\end{document}
+
+
+
