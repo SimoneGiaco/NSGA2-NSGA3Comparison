@@ -5,12 +5,14 @@ from pymoo.algorithms.moo.nsga3 import NSGA3
 from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PM
 from pymoo.optimize import minimize
-from test.problem.problemDTLZ2 import problem_dtlz2
-from test.problem.problemDTLZ3 import problem_dtlz3
-from test.problem.problemDTLZ6 import problem_dtlz6
-from test.problem.problemDTLZ7 import problem_dtlz7
+from pymoo.visualization.scatter import Scatter
+from pymoo.indicators.igd import IGD
+from pymoo.indicators.hv import HV
+from pymoo.util.ref_dirs import get_reference_directions
 from test.payload.configNSGA2 import get_config_NSGA2
 from test.payload.configNSGA3 import get_config_NSGA3
+from src.utils import get_prob, gen_dataframe
+
 
 # Function defining the minimize object for the NSGA2 algorithm.
 def NSGA2_opt(problem: str, n_obj: int):
@@ -32,6 +34,7 @@ def NSGA2_opt(problem: str, n_obj: int):
                   seed=1,
                   save_history=False,   #For faster convergence we do not keep the history.
                   verbose=False)
+
 
 # Function defining the minimize object for the NSGA3 algorithm.
 def NSGA3_opt(problem: str, n_obj: int):
@@ -55,19 +58,33 @@ def NSGA3_opt(problem: str, n_obj: int):
                   save_history=False,     #For faster convergence we do not keep the history.
                   verbose=False)
 
-#Function which returns the corresponding problem object given the ID (string) of the problem.
-def get_prob(problem: str, n_obj: int):
-    if problem == 'DTLZ2':
-        return problem_dtlz2(n_obj)
-    elif problem == 'DTLZ3':
-        return problem_dtlz3(n_obj)
-    elif problem == 'DTLZ6':
-        return problem_dtlz6(n_obj) 
-    else:
-        return problem_dtlz7(n_obj)
 
-#We collect our choices for the number of max generations in a pandas DataFrame. We pass this to the termination criterion.
-def gen_dataframe():
-    dict={'DTLZ2':[200,100,500] , 'DTLZ3':[3000,1000,2000] , 'DTLZ6':[100,800,1500] , 'DTLZ7':[100,400,400] }
-    gen_table = pd.DataFrame(dict, columns=dict.keys(), index=[2,3,4])
-    return gen_table
+# Function providing the metrics and plots for the optimized solution
+def optimization_outcome(problem, n_obj, result):
+    y = np.max(result.F, axis=0)  # For the computation of HV we need a reference point. We simply take the max over the non-dominated front.
+    index = HV(ref_point=y)
+    ref_dirs = get_reference_directions("das-dennis", 4, n_partitions=6)  # The reference directions are needed to determine the pareto front with n_obj > 3.
+
+    if n_obj == 4 and problem in ["DTLZ6","DTLZ7"]:  # The Pareto front is not implemented in pymoo yet, so we can only compute the Hypervolume
+        print(f"Hypervolume: {round(index(result.F),5)}")
+    
+    # We compute both IGD score and Hypervolume.
+    elif n_obj == 4 and problem in ["DTLZ2","DTLZ3"]:  
+        pf = get_prob(problem, n_obj).pareto_front(ref_dirs)  # Since problem is a string, we use the function get_prob() to extract the actual problem object.
+        index2 = IGD(pf)
+        print(f"IGD Score: {round(index2(result.F),5)}")
+        print(f"Hypervolume: {round(index(result.F),5)}")
+        print(f"Hypervolume Pareto front: {round(index(pf),5)}")  # Simple comparison to see how good the Hypervolume metric is (should be close to that of the Pareto front).
+
+    else:
+        pff = get_prob(problem, n_obj).pareto_front()  # As before we compute IGD score and Hypervolume. Again we use get_prob() to extract the problem object from the string.
+        index2 = IGD(pff)
+        print(f"IGD Score: {round(index2(result.F),5)}")
+        print(f"Hypervolume: {round(index(result.F),5)}")
+        print(f"Hypervolume Pareto front: {round(index(pff),5)}")
+        # We add the plot for the non-dominated front (in red) VS points of the Pareto front (in black).
+        plot = (Scatter())  
+        plot.add(pff, plot_type="scatter", color="black", alpha=0.5)
+        plot.add(result.F, facecolor="red", edgecolor="red")
+        plot.save(f"{problem}_{n_obj}_objectives.png")  # We save the plot as a .png file.
+        plot.show()
