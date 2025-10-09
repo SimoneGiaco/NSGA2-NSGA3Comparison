@@ -38,12 +38,12 @@ def NSGA2_opt(problem: str, n_obj: int):
 
 # Function defining the minimize object for the NSGA3 algorithm.
 def NSGA3_opt(problem: str, n_obj: int):
-    dict3 = get_config_NSGA3(n_obj)  #Configuration data for the algorithm.
+    dict3 = get_config_NSGA3(n_obj)  
     pop_size=dict3['pop_size']
-    prob=get_prob(problem,n_obj)     #Problem object.
+    prob=get_prob(problem,n_obj)    
     n_var=prob.n_var
-    df=gen_dataframe()               #Pandas Dataframe collecting max generations setting.
-    X=np.random.rand(pop_size,n_var) #Initial generation.
+    df=gen_dataframe()              
+    X=np.random.rand(pop_size,n_var)
 
     algorithm = NSGA3(pop_size=pop_size,
                     ref_dirs=dict3['ref_dirs'],
@@ -53,31 +53,31 @@ def NSGA3_opt(problem: str, n_obj: int):
                     eliminate_duplicates=True)
     return minimize(prob,
                   algorithm,
-                  ('n_gen', df.loc[n_obj,problem]),  #Termination criterion.
+                  ('n_gen', df.loc[n_obj,problem]), 
                   seed=1,
-                  save_history=False,     #For faster convergence we do not keep the history.
+                  save_history=False,   
                   verbose=False)
 
 
 # Function providing the metrics and plots for the optimized solution
 def optimization_outcome(problem, n_obj, result):
-    y = np.max(result.F, axis=0)  # For the computation of HV we need a reference point. We simply take the max over the non-dominated front.
+    y = np.max(result.F, axis=0)  # Reference point needed for the computation of HV. We take the max over the non-dominated front.
     index = HV(ref_point=y)
-    ref_dirs = get_reference_directions("das-dennis", 4, n_partitions=6)  # The reference directions are needed to determine the pareto front with n_obj > 3.
+    ref_dirs = get_reference_directions("das-dennis", 4, n_partitions=6)  # Reference directions needed to determine the pareto front with n_obj > 3.
 
     if n_obj == 4 and problem in ["DTLZ6","DTLZ7"]:  # The Pareto front is not implemented in pymoo yet, so we can only compute the Hypervolume
         print(f"Hypervolume: {round(index(result.F),5)}")
     
     # We compute both IGD score and Hypervolume.
     elif n_obj == 4 and problem in ["DTLZ2","DTLZ3"]:  
-        pf = get_prob(problem, n_obj).pareto_front(ref_dirs)  # Since problem is a string, we use the function get_prob() to extract the actual problem object.
+        pf = get_prob(problem, n_obj).pareto_front(ref_dirs)  
         index2 = IGD(pf)
         print(f"IGD Score: {round(index2(result.F),5)}")
         print(f"Hypervolume: {round(index(result.F),5)}")
-        print(f"Hypervolume Pareto front: {round(index(pf),5)}")  # Simple comparison to see how good the Hypervolume metric is (should be close to that of the Pareto front).
+        print(f"Hypervolume Pareto front: {round(index(pf),5)}")  # Comparison to see how good the Hypervolume metric is (should be close to that of the Pareto front).
 
     else:
-        pff = get_prob(problem, n_obj).pareto_front()  # As before we compute IGD score and Hypervolume. Again we use get_prob() to extract the problem object from the string.
+        pff = get_prob(problem, n_obj).pareto_front() 
         index2 = IGD(pff)
         print(f"IGD Score: {round(index2(result.F),5)}")
         print(f"Hypervolume: {round(index(result.F),5)}")
@@ -86,5 +86,5 @@ def optimization_outcome(problem, n_obj, result):
         plot = (Scatter())  
         plot.add(pff, plot_type="scatter", color="black", alpha=0.5)
         plot.add(result.F, facecolor="red", edgecolor="red")
-        plot.save(f"{problem}_{n_obj}_objectives.png")  # We save the plot as a .png file.
+        plot.save(f"{problem}_{n_obj}_objectives.png")  
         plot.show()
