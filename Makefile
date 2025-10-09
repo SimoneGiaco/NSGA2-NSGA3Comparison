@@ -2,7 +2,7 @@ install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
 
-test:
+testing:
 	python -m pytest -vv --cov=main test_file.py
 
 format:	
@@ -11,4 +11,4 @@ format:
 lint:
 	pylint --disable=R,C *.py
 
-all: install lint test format 
+all: install lint testing format 
